@@ -7,6 +7,18 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+class SinglesStats(models.Model):
+    artist_id = models.IntegerField(primary_key=True)
+    title = models.CharField(max_length=45, blank=True, null=True)
+    number_10_18_23_streams = models.IntegerField(db_column='10_18_23_streams', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
+    album_id = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'singles_stats'
+    
+    def display(self):
+        return str(self.artist_id) + ' - ' + self.title + ' - ' + str(self.number_10_18_23_streams) + ' - ' + str(self.album_id)
 
 class Album(models.Model):
     album_id = models.IntegerField(primary_key=True)
@@ -139,13 +151,3 @@ class DjangoSession(models.Model):
         managed = False
         db_table = 'django_session'
 
-
-class SinglesStats(models.Model):
-    artist_id = models.IntegerField(primary_key=True)
-    title = models.CharField(max_length=45, blank=True, null=True)
-    number_10_18_23_streams = models.IntegerField(db_column='10_18_23_streams', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
-    album_id = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'singles_stats'
