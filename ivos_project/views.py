@@ -1,9 +1,13 @@
 from django.http import JsonResponse
 from .models import SinglesStats
-from .serializers import SinglesStatsSerializer
+from .serializers import TopStreamsSerializer, TopTrendingSerializer
 
-def singles_stats(request):
+def topStreams(request):
+    singlesstats = SinglesStats.top_streams()
+    serializer = TopStreamsSerializer(singlesstats, many = True)
+    return JsonResponse(serializer.data, safe = False)
 
-    singlesstats = SinglesStats.display()
-    serializer = SinglesStatsSerializer(singlesstats, many = True)
+def topTrending(request):
+    singlesstats = SinglesStats.top_trending()
+    serializer = TopTrendingSerializer(singlesstats, many = True)
     return JsonResponse(serializer.data, safe = False)

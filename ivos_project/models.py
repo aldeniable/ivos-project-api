@@ -8,17 +8,101 @@
 from django.db import models
 
 class SinglesStats(models.Model):
-    artist_id = models.IntegerField(primary_key=True)
+    singles_stats_id = models.IntegerField(primary_key = True)
+    artist_id = models.IntegerField(blank=True, null=True)
     title = models.CharField(max_length=45, blank=True, null=True)
-    number_10_18_23_streams = models.IntegerField(db_column='10_18_23_streams', blank=True, null=True)  # Field renamed because it wasn't a valid Python identifier.
     album_id = models.IntegerField(blank=True, null=True)
+    fetch_data_dates_id = models.IntegerField(blank=True, null=True)
+    max_fetch_data_streams = models.IntegerField(blank=True, null=True)
+    difference_streams = models.IntegerField(blank = True, null = True)
+    album_name = models.CharField(max_length=45, blank=True, null=True)
+    artist_name = models.CharField(max_length=45, blank=True, null=True)
+
 
     class Meta:
         managed = False
         db_table = 'singles_stats'
     
-    def display(self):
-        return str(self.artist_id) + ' - ' + self.title + ' - ' + str(self.number_10_18_23_streams) + ' - ' + str(self.album_id)
+    #Alden 01-10-24: function to retrieve Top Streams
+    def top_streams():
+        query ="""
+                SELECT
+                    single.singles_stats_id,
+                    single.title,
+                    max_streams.subquery_streams AS max_fetch_data_streams,
+                    single.fetch_data_dates_id,
+                    artist.artist_name,
+                    album.album_name
+                FROM
+                    singles_stats single
+                INNER JOIN
+                    artist ON single.artist_id = artist.artist_id
+                LEFT JOIN
+                    album ON single.album_id = album.album_id
+                INNER JOIN (
+                    SELECT
+                        title,
+                        MAX(fetch_data_dates_id) AS max_fetch_data_dates_id,
+                        MAX(streams) AS subquery_streams
+                    FROM
+                        singles_stats
+                    GROUP BY
+                        title
+                ) AS max_streams
+                ON single.title = max_streams.title AND single.fetch_data_dates_id = max_streams.max_fetch_data_dates_id
+                ORDER BY
+                    single.streams DESC;
+                """
+        
+        topstreams = SinglesStats.objects.raw(query)
+        return topstreams
+
+    #Alden 02-22-24: function to retrieve Top Trending
+    def top_trending():
+        query ="""
+
+                SELECT
+                    single.singles_stats_id,
+                    single.title,
+                    difference_streams.difference AS difference_streams,
+                    artist.artist_name,
+                    album.album_name
+                FROM
+                    singles_stats single
+                INNER JOIN
+                    artist ON single.artist_id = artist.artist_id
+                LEFT JOIN
+                    album ON single.album_id = album.album_id
+                INNER JOIN (
+					SELECT
+					title,
+					(
+					SELECT
+						streams
+						FROM singles_stats s2
+						WHERE s2.title = s1.title ORDER BY fetch_data_dates_id DESC LIMIT 1
+					)
+					-
+					(
+					SELECT
+						streams
+						FROM singles_stats s2
+						WHERE s2.title = s1.title ORDER BY fetch_data_dates_id DESC LIMIT 1 OFFSET 1
+					) as difference
+					FROM singles_stats s1
+					GROUP BY title
+                ) AS difference_streams ON single.title = difference_streams.title
+                WHERE single.singles_stats_id = (
+					SELECT MAX(s2.singles_stats_id)
+					FROM singles_stats s2
+					WHERE s2.title = single.title
+				)
+			ORDER BY
+				difference_streams DESC;
+                """
+        
+        toptrending = SinglesStats.objects.raw(query)
+        return toptrending
 
 class Album(models.Model):
     album_id = models.IntegerField(primary_key=True)
