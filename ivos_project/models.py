@@ -5,7 +5,7 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-from django.db import models
+from django.db import models, connection
 
 class SinglesStats(models.Model):
     singles_stats_id = models.IntegerField(primary_key = True)
@@ -17,6 +17,7 @@ class SinglesStats(models.Model):
     difference_streams = models.IntegerField(blank = True, null = True)
     album_name = models.CharField(max_length=45, blank=True, null=True)
     artist_name = models.CharField(max_length=45, blank=True, null=True)
+    fetch_dates = models.DateField(blank = True, null = True)
 
 
     class Meta:
@@ -53,7 +54,6 @@ class SinglesStats(models.Model):
                 ORDER BY
                     single.streams DESC;
                 """
-        
         topstreams = SinglesStats.objects.raw(query)
         return topstreams
 
@@ -97,13 +97,13 @@ class SinglesStats(models.Model):
 					FROM singles_stats s2
 					WHERE s2.title = single.title
 				)
-			ORDER BY
-				difference_streams DESC;
+			    ORDER BY difference_streams DESC;
+
                 """
-        
+
         toptrending = SinglesStats.objects.raw(query)
         return toptrending
-
+    
 class Album(models.Model):
     album_id = models.IntegerField(primary_key=True)
     album_name = models.CharField(max_length=45, blank=True, null=True)
@@ -111,6 +111,23 @@ class Album(models.Model):
     class Meta:
         managed = False
         db_table = 'album'
+        
+class Dates(models.Model):
+    fetch_data_dates_id = models.IntegerField(primary_key=True)
+    fetch_dates = models.DateField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'fetch_data_dates'
+    
+    def toptrendingdates():
+        query = """
+                SELECT fetch_data_dates_id, fetch_dates FROM fetch_data_dates
+                ORDER BY fetch_dates DESC
+                LIMIT 2;
+            """
+        toptrendingdates = Dates.objects.raw(query)
+        return toptrendingdates
 
 
 class Artist(models.Model):
