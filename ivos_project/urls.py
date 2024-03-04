@@ -16,11 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import topStreams, topTrending, topTrendingDates
+from .views import topStreams, topTrending, topTrendingDates, consistentFansScore
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('topStreams/', topStreams ),
     path('topTrending/', topTrending),
-    path('topTrendingDates/', topTrendingDates)
+    path('topTrendingDates/', topTrendingDates),
+    path('artistAnalytics/', consistentFansScore)
+
 ]

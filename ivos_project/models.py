@@ -133,6 +133,15 @@ class Dates(models.Model):
 class Artist(models.Model):
     artist_id = models.IntegerField(primary_key=True)
     artist_name = models.CharField(max_length=45, blank=True, null=True)
+    consistent_fans_score = models.CharField(max_length=45, blank=True, null=True)
+    song_count = models.IntegerField(blank = True, null = True)
+    total_streams = models.IntegerField(blank = True, null = True)
+    onemil = models.IntegerField(blank = True, null = True)
+    fivemil = models.IntegerField(blank = True, null = True)
+    tenmil = models.IntegerField(blank = True, null = True)
+    fiftymil = models.IntegerField(blank = True, null = True)
+    hundredmil =models.IntegerField(blank = True, null = True)
+
 
     class Meta:
         managed = False
