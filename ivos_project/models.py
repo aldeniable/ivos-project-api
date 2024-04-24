@@ -128,6 +128,25 @@ class Dates(models.Model):
             """
         toptrendingdates = Dates.objects.raw(query)
         return toptrendingdates
+    
+class Post(models.Model):
+    idPost = models.IntegerField(primary_key = True)
+    userID = models.IntegerField()
+    datePosted = models.DateTimeField(blank = True)
+    post = models.TextField(blank = True)
+    username = models.CharField(max_length = 20)
+
+    class Meta:
+        managed = False
+        db_table = 'post'
+    #04-23-2024 
+    def getposts():
+        query = """
+                SELECT idPost, b.username, a.datePosted, a.post FROM posts a INNER JOIN auth_user b ON a.userID = b.id
+                ORDER BY a.datePosted DESC;
+            """
+        posts = Post.objects.raw(query)
+        return posts
 
 
 class Artist(models.Model):

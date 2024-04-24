@@ -1,7 +1,7 @@
 from django.http import JsonResponse
-from .models import SinglesStats, Dates
+from .models import SinglesStats, Dates, Post
 from django.contrib.auth.models import User
-from .serializers import TopStreamsSerializer, TopTrendingSerializer, TopTrendingDatesSerializer, ConsistentFanScoreSerializer, UserSerializer
+from .serializers import TopStreamsSerializer, TopTrendingSerializer, TopTrendingDatesSerializer, ConsistentFanScoreSerializer, UserSerializer, PostSerializer
 from statistics import stdev, mean
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -170,6 +170,19 @@ def consistentFansScore(request):
     return JsonResponse(serializer_consistentFanScore.data, safe = False)
 
 
+def posts(request):
+    posts = Post.getposts()
+    serializer = PostSerializer(posts, many = True)
+    return JsonResponse(serializer.data, safe = False)
+
+
+
+
+
+
+
+
+
 @api_view(['POST'])
 def signup(request):
     serializer = UserSerializer(data = request.data)
@@ -192,15 +205,13 @@ def login(request):
     token, created = Token.objects.get_or_create(user = user) 
     serializer = UserSerializer(instance = user)   
     return Response({"token": token.key, "user":serializer.data})
-
-
-
     return Response({})
+
+
 
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])

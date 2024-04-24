@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import SinglesStats, Dates, Artist
+from .models import SinglesStats, Dates, Artist, Post
 from django.contrib.auth.models import User
 User
 
@@ -21,6 +21,10 @@ class ConsistentFanScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
         fields = ['artist_id','artist_name','consistent_fans_score', 'song_count', 'total_streams', 'onemil', 'fivemil', 'tenmil', 'fiftymil','hundredmil']
+class PostSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Post
+            fields = ['idPost','username','datePosted','post']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta(object):
