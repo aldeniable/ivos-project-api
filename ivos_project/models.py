@@ -134,16 +134,16 @@ class Post(models.Model):
     userID = models.IntegerField()
     datePosted = models.DateTimeField(blank = True)
     post = models.TextField(blank = True)
-    username = models.CharField(max_length = 20)
+    username = models.CharField(max_length=150)
 
     class Meta:
         managed = False
-        db_table = 'post'
+        db_table = 'posts'
     #04-23-2024 
     def getposts():
         query = """
-                SELECT idPost, b.username, a.datePosted, a.post FROM posts a INNER JOIN auth_user b ON a.userID = b.id
-                ORDER BY a.datePosted DESC;
+                SELECT idPost, username, datePosted, post FROM posts
+                ORDER BY datePosted DESC;
             """
         posts = Post.objects.raw(query)
         return posts

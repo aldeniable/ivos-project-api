@@ -24,7 +24,7 @@ class ConsistentFanScoreSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
         class Meta:
             model = Post
-            fields = ['idPost','username','datePosted','post']
+            fields = ['username', 'userID','datePosted','post']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta(object):

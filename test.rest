@@ -2,7 +2,7 @@ POST http://127.0.0.1:8000/login/
 Content-Type: application/json
 
 {
-    "username": "alden",
+    "username": "aldenrmd",
     "password": "@Alden123"
 } 
 
@@ -20,6 +20,27 @@ Content-Type: application/json
 GET http://127.0.0.1:8000/testToken/
 Content-Type: application/json 
 Authorization: Token ed70e65eb16ca013af6ad25a6a7f6a883b328ced
+
+{
+}
+
+###
+POST http://127.0.0.1:8000/insertPost/
+Content-Type: application/json
+Authorization: Token ed70e65eb16ca013af6ad25a6a7f6a883b328ced
+
+{
+    "username": "b;ah",
+    "datePosted": "2024-04-25" ,
+    "post": "blahvlah test",
+    "userID": 1
+}
+
+
+
+###
+GET http://127.0.0.1:8000/posts/
+Content-Type: application/json
 
 {
 }
