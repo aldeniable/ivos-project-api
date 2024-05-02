@@ -1,7 +1,7 @@
 from django.http import JsonResponse
-from .models import SinglesStats, Dates, Post
+from .models import SinglesStats, Dates, Post, Timeline
 from django.contrib.auth.models import User
-from .serializers import TopStreamsSerializer, TopTrendingSerializer, TopTrendingDatesSerializer, ConsistentFanScoreSerializer, UserSerializer, PostSerializer
+from .serializers import TopStreamsSerializer, TopTrendingSerializer, TopTrendingDatesSerializer, ConsistentFanScoreSerializer, UserSerializer, PostSerializer, TimelineSerializer
 from statistics import stdev, mean
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -23,6 +23,51 @@ def topTrendingDates(request):
     toptrendingdates = Dates.toptrendingdates()
     serializer_toptrendingdates = TopTrendingDatesSerializer(toptrendingdates, many = True)
     return JsonResponse(serializer_toptrendingdates.data, safe = False)
+
+def timeline(request):
+    timeline = Timeline.getAll()
+    serializer = TimelineSerializer(timeline, many = True)
+    return JsonResponse(serializer.data, safe = False)
+
+def posts(request):
+    posts = Post.getposts()
+    serializer = PostSerializer(posts, many = True)
+    return JsonResponse(serializer.data, safe = False)
+
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def insertPost(request):
+    serializer = PostSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response("P")
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def signup(request):
+    serializer = UserSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        user = User.objects.get(username = request.data['username'])
+        user.set_password(request.data['password'])
+        user.save()
+        token = Token.objects.create(user = user)
+        return Response({"token": token.key, "user":serializer.data})
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def login(request):
+
+    user = get_object_or_404(User, username = request.data['username'])
+    if not user.check_password(request.data['password']):
+        return Response ({"detail":"Not found."}, status = status.HTTP_404_NOT_FOUND)
+    token, created = Token.objects.get_or_create(user = user) 
+    serializer = UserSerializer(instance = user)   
+    return Response({"token": token.key, "user":serializer.data})
 
 def consistentFansScore(request):
     consistentFansScore = SinglesStats.top_streams()
@@ -116,7 +161,6 @@ def consistentFansScore(request):
             ivos_rank = f'{rank_counter}'
         elif score == fans_rate_unique:
             unique_rank = f'{rank_counter}'
-        
         rank_counter += 1
     
     consistentFansScores = [
@@ -168,64 +212,3 @@ def consistentFansScore(request):
     sorted_consistentFansScores = sorted(consistentFansScores, key=lambda x: x['consistent_fans_score'])
     serializer_consistentFanScore = ConsistentFanScoreSerializer(sorted_consistentFansScores, many = True)
     return JsonResponse(serializer_consistentFanScore.data, safe = False)
-
-
-def posts(request):
-    posts = Post.getposts()
-    serializer = PostSerializer(posts, many = True)
-    return JsonResponse(serializer.data, safe = False)
-
-
-from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-@api_view(['POST'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def insertPost(request):
-    serializer = PostSerializer(data = request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response("P")
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-
-@api_view(['POST'])
-def signup(request):
-    serializer = UserSerializer(data = request.data)
-    if serializer.is_valid():
-        serializer.save()
-        user = User.objects.get(username = request.data['username'])
-        user.set_password(request.data['password'])
-        user.save()
-        token = Token.objects.create(user = user)
-        return Response({"token": token.key, "user":serializer.data})
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-def login(request):
-
-    user = get_object_or_404(User, username = request.data['username'])
-    if not user.check_password(request.data['password']):
-        return Response ({"detail":"Not found."}, status = status.HTTP_404_NOT_FOUND)
-    token, created = Token.objects.get_or_create(user = user) 
-    serializer = UserSerializer(instance = user)   
-    return Response({"token": token.key, "user":serializer.data})
-    return Response({})
-
-
-
-from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def testToken(request):
-    return Response("P")
-
