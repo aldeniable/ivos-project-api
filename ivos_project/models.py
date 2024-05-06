@@ -143,7 +143,7 @@ class Post(models.Model):
     userID = models.IntegerField()
     datePosted = models.DateTimeField(blank = True)
     post = models.TextField(blank = True)
-    username = models.CharField(max_length=150)
+    username = models.CharField(max_length = 150)
 
     class Meta:
         managed = False
@@ -155,7 +155,23 @@ class Post(models.Model):
                 ORDER BY datePosted DESC;
             """
         posts = Post.objects.raw(query)
-        return posts
+        return posts 
+
+class Likes(models.Model):
+    likes_id = models.IntegerField(primary_key=True)
+    user_id = models.IntegerField()
+    post_id = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'likes'
+    #05062024
+    def didLike(userID, idPost):
+        try:
+            like = Likes.objects.get(user_id=userID, post_id=idPost)
+            return like
+        except Likes.DoesNotExist:
+            return None
 
 class Artist(models.Model):
     artist_id = models.IntegerField(primary_key=True)

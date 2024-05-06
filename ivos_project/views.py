@@ -1,7 +1,7 @@
 from django.http import JsonResponse
-from .models import SinglesStats, Dates, Post, Timeline
+from .models import SinglesStats, Dates, Post, Timeline, Likes
 from django.contrib.auth.models import User
-from .serializers import TopStreamsSerializer, TopTrendingSerializer, TopTrendingDatesSerializer, ConsistentFanScoreSerializer, UserSerializer, PostSerializer, TimelineSerializer
+from .serializers import TopStreamsSerializer, TopTrendingSerializer, TopTrendingDatesSerializer, ConsistentFanScoreSerializer, UserSerializer, PostSerializer, TimelineSerializer, LikesSerializer
 from statistics import stdev, mean
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -33,6 +33,12 @@ def posts(request):
     posts = Post.getposts()
     serializer = PostSerializer(posts, many = True)
     return JsonResponse(serializer.data, safe = False)
+
+def didLike(request, userID, idPost):
+    didLike = Likes.didLike(userID, idPost)
+    serializer = LikesSerializer(didLike)
+    return JsonResponse(serializer.data, safe = False)
+
 
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication

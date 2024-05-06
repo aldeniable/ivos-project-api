@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path, re_path
-from .views import topStreams, topTrending, topTrendingDates, consistentFansScore, login, signup, posts, insertPost, timeline
+from .views import topStreams, topTrending, topTrendingDates, consistentFansScore, login, signup, posts, insertPost, timeline, didLike
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -13,5 +13,6 @@ urlpatterns = [
     path('signup/', signup),
     path('posts/', posts),
     path('insertPost/', insertPost),
-    path('timeline/', timeline)
+    path('timeline/', timeline),
+    path('didLike/<int:userID>/<int:idPost>', didLike)
 ]
