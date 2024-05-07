@@ -168,7 +168,7 @@ class Likes(models.Model):
     #05062024
     def didLike(userID, idPost):
         try:
-            like = Likes.objects.get(user_id=userID, post_id=idPost)
+            like = Likes.objects.get(user_id = userID, post_id = idPost)
             return like
         except Likes.DoesNotExist:
             return None

@@ -30,6 +30,7 @@ Content-Type: application/json
 Authorization: Token ed70e65eb16ca013af6ad25a6a7f6a883b328ced
 
 {
+    
     "username": "b;ah",
     "datePosted": "2024-04-25" ,
     "post": "blahvlah test",
