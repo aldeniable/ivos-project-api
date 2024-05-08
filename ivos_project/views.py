@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from .models import SinglesStats, Dates, Post, Timeline, Likes
 from django.contrib.auth.models import User
-from .serializers import TopStreamsSerializer, TopTrendingSerializer, TopTrendingDatesSerializer, ConsistentFanScoreSerializer, UserSerializer, PostSerializer, TimelineSerializer, LikesSerializer
+from .serializers import TopStreamsSerializer, TopTrendingSerializer, TopTrendingDatesSerializer, ConsistentFanScoreSerializer, UserSerializer, InsertPostSerializer, PostSerializer, TimelineSerializer, LikesSerializer
 from statistics import stdev, mean
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -34,10 +34,24 @@ def posts(request):
     serializer = PostSerializer(posts, many = True)
     return JsonResponse(serializer.data, safe = False)
 
-def didLike(request, userID, idPost):
-    didLike = Likes.didLike(userID, idPost)
-    serializer = LikesSerializer(didLike)
+def didLike(request, userID):
+    didLike = Likes.didLike(userID)
+    serializer = LikesSerializer(didLike, many = True)
     return JsonResponse(serializer.data, safe = False)
+
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def likePost(request, userID, postID):
+    serializer = LikesSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response("P")
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 from rest_framework.decorators import authentication_classes, permission_classes
@@ -47,7 +61,7 @@ from rest_framework.permissions import IsAuthenticated
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def insertPost(request):
-    serializer = PostSerializer(data = request.data)
+    serializer = InsertPostSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()
         return Response("P")

@@ -144,6 +144,7 @@ class Post(models.Model):
     datePosted = models.DateTimeField(blank = True)
     post = models.TextField(blank = True)
     username = models.CharField(max_length = 150)
+    like_count= models.BigIntegerField(null = True, blank = True)
 
     class Meta:
         managed = False
@@ -151,11 +152,31 @@ class Post(models.Model):
     #04-23-2024 
     def getposts():
         query = """
-                SELECT idPost, username, datePosted, post FROM posts
-                ORDER BY datePosted DESC;
+                    SELECT
+                    p.idPost,
+                    p.username,
+                    p.datePosted,
+                    p.post,
+                    (SELECT COUNT(*) FROM likes l WHERE l.post_id = p.idPost) AS like_count
+                    FROM
+                    posts p
+                    ORDER BY
+                    p.datePosted DESC;
             """
         posts = Post.objects.raw(query)
         return posts 
+    
+class Post2(models.Model):
+    idPost = models.IntegerField(primary_key = True)
+    userID = models.IntegerField()
+    datePosted = models.DateTimeField(blank = True)
+    post = models.TextField(blank = True)
+    username = models.CharField(max_length = 150)
+
+    class Meta:
+        managed = False
+        db_table = 'posts'
+
 
 class Likes(models.Model):
     likes_id = models.IntegerField(primary_key=True)
@@ -166,12 +187,9 @@ class Likes(models.Model):
         managed = False
         db_table = 'likes'
     #05062024
-    def didLike(userID, idPost):
-        try:
-            like = Likes.objects.get(user_id = userID, post_id = idPost)
-            return like
-        except Likes.DoesNotExist:
-            return None
+    def didLike(userID):
+        return Likes.objects.filter(user_id = userID)
+        
 
 class Artist(models.Model):
     artist_id = models.IntegerField(primary_key=True)

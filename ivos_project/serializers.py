@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import SinglesStats, Dates, Artist, Post, Timeline, Likes
+from .models import SinglesStats, Dates, Artist, Post, Post2, Timeline, Likes
 from django.contrib.auth.models import User
 
 class TopStreamsSerializer(serializers.ModelSerializer):
@@ -25,8 +25,11 @@ class ConsistentFanScoreSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
         class Meta:
             model = Post
-            fields = ['idPost','username', 'userID','datePosted','post']
-            read_only_fields = ['idPost']
+            fields = ['idPost','username', 'userID','datePosted','post','like_count']
+class InsertPostSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Post2
+            fields = ['username', 'userID','datePosted','post']
 class UserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
