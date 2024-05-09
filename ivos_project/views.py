@@ -46,11 +46,27 @@ from rest_framework.permissions import IsAuthenticated
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def likePost(request, userID, postID):
-    serializer = LikesSerializer(data = request.data)
+    postdata = { 'post_id': postID,
+                'user_id': userID }
+    serializer = LikesSerializer(data = postdata)
     if serializer.is_valid():
         serializer.save()
         return Response("P")
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+@api_view(['DELETE'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def unlikePost(request, userID, postID):
+    like = get_object_or_404(Likes, user_id = userID, post_id = postID)
+    if request.method == 'DELETE':
+        like.delete()
+        return Response("P")
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 

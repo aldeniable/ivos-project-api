@@ -43,4 +43,4 @@ class TimelineSerializer(serializers.ModelSerializer):
 class LikesSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Likes
-        fields = ['likes_id', 'post_id' ,'user_id']
+        fields = ['post_id' ,'user_id']

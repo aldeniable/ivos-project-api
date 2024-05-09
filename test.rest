@@ -36,7 +36,13 @@ Authorization: Token ed70e65eb16ca013af6ad25a6a7f6a883b328ced
     "post": "blahvlah test",
     "userID": 1
 }
+###
+POST http://127.0.0.1:8000/likePost/2/32
+Content-Type: application/json
+Authorization: Token ed70e65eb16ca013af6ad25a6a7f6a883b328ced
 
+{
+}
 
 
 ###
