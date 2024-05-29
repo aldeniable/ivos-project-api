@@ -105,7 +105,7 @@ class Album(models.Model):
 
 class Timeline(models.Model):
     timeline_id = models.IntegerField(primary_key=True)
-    date = models.DateField(blank=True, null=True)
+    date = models.CharField(max_length = 100, blank=True, null=True)
     title = models.CharField(max_length = 100, blank=True, null=True)
     deets = models.CharField(max_length = 500, blank=True, null=True)
 
@@ -115,8 +115,7 @@ class Timeline(models.Model):
 
     def getAll():   #05-02-2024
         query = """
-             SELECT * FROM timeline
-             ORDER BY date DESC;
+             SELECT * FROM timeline;
             """
         timelines = Timeline.objects.raw(query)
         return timelines
