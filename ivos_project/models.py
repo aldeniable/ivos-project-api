@@ -115,7 +115,8 @@ class Timeline(models.Model):
 
     def getAll():   #05-02-2024
         query = """
-             SELECT * FROM timeline;
+             SELECT * FROM timeline
+             ORDER BY timeline_id;
             """
         timelines = Timeline.objects.raw(query)
         return timelines
@@ -207,9 +208,33 @@ class Artist(models.Model):
         db_table = 'artist'
 
 
+class UserProfile(models.Model):
+    id = models.IntegerField(primary_key = True)
+    username = models.CharField(max_length = 150)
+    email = models.EmailField()
+    fullname = models.CharField(max_length = 150)
+    age = models.IntegerField()
+    place = models.CharField(max_length = 150)
+    fav_artist = models.CharField(max_length = 150)
+    fave_album = models.CharField(max_length = 150)
+    current_fave_song = models.CharField(max_length = 150)
+    gatekeep_song = models.CharField(max_length = 150)
+    fan_converter_song = models.CharField(max_length = 150)
+    alltime_fave_song = models.CharField(max_length = 150)
+    dont_like_song = models.CharField(max_length = 150)
 
-
-
+    class Meta:
+        managed = False
+        db_table = 'auth_user'
+    #06-06-2024 
+    def getuserprofile(userID):
+        query = """
+                    SELECT id, username, email, fullname, age, place, fav_artist, fave_album, current_fave_song, gatekeep_song,fan_converter_song,alltime_fave_song,dont_like_song
+                    FROM auth_user
+                    WHERE id = %s
+            """
+        userprofile = list(UserProfile.objects.raw(query, [userID]))
+        return userprofile[0]
 
 
 

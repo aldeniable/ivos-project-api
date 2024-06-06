@@ -1,7 +1,7 @@
 from django.http import JsonResponse
-from .models import SinglesStats, Dates, Post, Timeline, Likes
+from .models import SinglesStats, Dates, Post, Timeline, Likes, UserProfile
 from django.contrib.auth.models import User
-from .serializers import TopStreamsSerializer, TopTrendingSerializer, TopTrendingDatesSerializer, ConsistentFanScoreSerializer, UserSerializer, InsertPostSerializer, PostSerializer, TimelineSerializer, LikesSerializer
+from .serializers import UserProfileSerializer, TopStreamsSerializer, TopTrendingSerializer, TopTrendingDatesSerializer, ConsistentFanScoreSerializer, UserSerializer, InsertPostSerializer, PostSerializer, TimelineSerializer, LikesSerializer
 from statistics import stdev, mean
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -39,6 +39,11 @@ def didLike(request, userID):
     serializer = LikesSerializer(didLike, many = True)
     return JsonResponse(serializer.data, safe = False)
 
+def getUserProfile(request, userID):
+    getUserProfile = UserProfile.getuserprofile(userID)
+    serializer = UserProfileSerializer(getUserProfile)
+    return JsonResponse(serializer.data, safe = False)
+
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -53,6 +58,8 @@ def likePost(request, userID, postID):
         serializer.save()
         return Response("P")
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
@@ -82,6 +89,21 @@ def insertPost(request):
         serializer.save()
         return Response("P")
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def updateUserProfile(request):
+    serializer = UserProfileSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response("P")
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def signup(request):

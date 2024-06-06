@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import SinglesStats, Dates, Artist, Post, Post2, Timeline, Likes
+from .models import SinglesStats, Dates, Artist, Post, Post2, Timeline, Likes, UserProfile
 from django.contrib.auth.models import User
 
 class TopStreamsSerializer(serializers.ModelSerializer):
@@ -44,3 +44,8 @@ class LikesSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = Likes
         fields = ['post_id' ,'user_id']
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta(object):
+        model = UserProfile
+        fields = ['id','username','email','fullname','age','place','fav_artist','fave_album','current_fave_song','gatekeep_song','fan_converter_song','alltime_fave_song','dont_like_song']
