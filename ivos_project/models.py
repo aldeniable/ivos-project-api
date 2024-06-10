@@ -211,17 +211,17 @@ class Artist(models.Model):
 class UserProfile(models.Model):
     id = models.IntegerField(primary_key = True)
     username = models.CharField(max_length = 150)
-    email = models.EmailField()
-    fullname = models.CharField(max_length = 150)
-    age = models.IntegerField()
-    place = models.CharField(max_length = 150)
-    fav_artist = models.CharField(max_length = 150)
-    fave_album = models.CharField(max_length = 150)
-    current_fave_song = models.CharField(max_length = 150)
-    gatekeep_song = models.CharField(max_length = 150)
-    fan_converter_song = models.CharField(max_length = 150)
-    alltime_fave_song = models.CharField(max_length = 150)
-    dont_like_song = models.CharField(max_length = 150)
+    email = models.EmailField(blank=True)
+    fullname = models.CharField(max_length = 150, blank=True)
+    age = models.IntegerField(null = True, blank=True)
+    place = models.CharField(max_length = 150, blank=True)
+    fav_artist = models.CharField(max_length = 150, blank=True)
+    fave_album = models.CharField(max_length = 150, blank=True)
+    current_fave_song = models.CharField(max_length = 150, blank=True)
+    gatekeep_song = models.CharField(max_length = 150, blank=True)
+    fan_converter_song = models.CharField(max_length = 150, blank=True)
+    alltime_fave_song = models.CharField(max_length = 150, blank=True)
+    dont_like_song = models.CharField(max_length = 150, blank=True)
 
     class Meta:
         managed = False

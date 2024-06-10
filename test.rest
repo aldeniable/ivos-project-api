@@ -11,7 +11,7 @@ POST http://127.0.0.1:8000/signup/
 Content-Type: application/json
 
 {
-    "username": "aldenarrr",
+    "username": "aldenrmd1",
     "password": "@Alden123",
     "email": "aldenrmd10@gmail.com"
 }
@@ -50,4 +50,16 @@ GET http://127.0.0.1:8000/posts/
 Content-Type: application/json
 
 {
+}
+###
+POST http://127.0.0.1:8000/updateUserProfile/
+Content-Type: application/json
+Authorization: Token ed70e65eb16ca013af6ad25a6a7f6a883b328ced
+
+{
+    
+    "username": "b;ah",
+    "datePosted": "2024-04-25" ,
+    "post": "blahvlah test",
+    "userID": 1
 }
