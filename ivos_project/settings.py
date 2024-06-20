@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-+ils+mq_42g^z@mpno%nt7*p^31u(cct=ftwsd!#4ktv5it7g3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -70,6 +70,7 @@ WSGI_APPLICATION = 'ivos_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -79,6 +80,15 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306'
     }
+}
+'''
+import environ
+env = environ.Env()
+environ.Env.read_env()
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.parse('postgres://aldenrmd:UewllTU5DFcGwBTnjaupmmZygZwNc8GN@dpg-cppd96g8fa8c739dpbig-a.singapore-postgres.render.com/ivos_db')
 }
 
 # Password validation
