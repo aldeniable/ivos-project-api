@@ -153,15 +153,15 @@ class Post(models.Model):
     def getposts():
         query = """
                     SELECT
-                    p.idPost,
-                    p.username,
-                    p.datePosted,
-                    p.post,
-                    (SELECT COUNT(*) FROM likes l WHERE l.post_id = p.idPost) AS like_count
+                        p."idPost",
+                        p."username",
+                        p."datePosted",
+                        p."post",
+                        (SELECT COUNT(*) FROM likes l WHERE l."post_id" = p."idPost") AS like_count
                     FROM
-                    posts p
+                        posts p
                     ORDER BY
-                    p.datePosted DESC;
+                        p."datePosted" DESC;
             """
         posts = Post.objects.raw(query)
         return posts 
