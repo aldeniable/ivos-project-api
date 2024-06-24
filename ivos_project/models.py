@@ -175,7 +175,7 @@ class Post2(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'posts'
+        db_table = 'posts2'
 
 
 class Likes(models.Model):
@@ -225,7 +225,7 @@ class UserProfile(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'auth_user'
+        db_table = 'userprofile'
     #06-06-2024 
     def getuserprofile(userID):
         query = """

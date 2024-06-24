@@ -10,9 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-+ils+mq_42g^z@mpno%nt7*p^31u(cct=ftwsd!#4ktv5it7g3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ivos-app-api.onrender.com','*','http://127.0.0.1:8000/']
 
 # Application definition
 
@@ -73,15 +73,17 @@ WSGI_APPLICATION = 'ivos_project.wsgi.application'
 '''
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ivos_stats',
-        'USER': 'root',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ivos_db',
+        'USER': 'postgres',
         'PASSWORD': '@Alden123',
         'HOST': 'localhost',
-        'PORT': '3306'
+        'PORT': '5432'
     }
 }
 '''
+#Set-ExecutionPolicy Unrestricted -Scope Process
+
 import environ
 env = environ.Env()
 environ.Env.read_env()
