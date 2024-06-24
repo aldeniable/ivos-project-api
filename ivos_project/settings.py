@@ -12,11 +12,7 @@ SECRET_KEY = 'django-insecure-+ils+mq_42g^z@mpno%nt7*p^31u(cct=ftwsd!#4ktv5it7g3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-<<<<<<< HEAD
 ALLOWED_HOSTS = ['ivos-app-api.onrender.com','*','http://127.0.0.1:8000/']
-=======
-ALLOWED_HOSTS = ['ivos-app-api.onrender.com','*']
->>>>>>> eacaaee625772f4f42c162c358b36f3279684bcc
 
 # Application definition
 
