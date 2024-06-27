@@ -100,7 +100,7 @@ from rest_framework.permissions import IsAuthenticated
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def updateUserProfile(request):
-    user_profile = UserProfile.objects.get(id = request.data['id'])
+    user_profile = UserProfile.objects.get(id = request.data["id"])
     serializer = UserProfileSerializer(user_profile, data = request.data, partial = True) 
     if serializer.is_valid():
         serializer.save()
