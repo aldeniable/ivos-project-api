@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'ivos_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -103,19 +103,19 @@ DATABASES = {
         'PORT': '3306'
     }
 }
-
+'''
 #Set-ExecutionPolicy Unrestricted -Scope Process
 
 #import environ
 #env = environ.Env()
 #environ.Env.read_env()
-'''
+
 import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.parse('postgres://aldenrmd:UewllTU5DFcGwBTnjaupmmZygZwNc8GN@dpg-cppd96g8fa8c739dpbig-a.singapore-postgres.render.com/ivos_db')
 }
-'''
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
