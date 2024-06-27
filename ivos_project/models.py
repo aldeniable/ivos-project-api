@@ -150,7 +150,7 @@ class Post(models.Model):
         managed = False
         db_table = 'posts'
     #04-23-2024 
-    def getposts():
+    def getposts(cls):
         query = """
                     SELECT
                         p."idPost",
@@ -163,7 +163,7 @@ class Post(models.Model):
                     ORDER BY
                         p."datePosted" DESC;
             """
-        posts = Post.objects.raw(query)
+        posts = cls.objects.raw(query)
         return posts 
     
 class Post2(models.Model):
