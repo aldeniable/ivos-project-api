@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-+ils+mq_42g^z@mpno%nt7*p^31u(cct=ftwsd!#4ktv5it7g3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['ivos-app-api.onrender.com','*','http://127.0.0.1:8000/']
 
@@ -84,9 +84,9 @@ DATABASES = {
 '''
 #Set-ExecutionPolicy Unrestricted -Scope Process
 
-import environ
-env = environ.Env()
-environ.Env.read_env()
+#import environ
+#env = environ.Env()
+#environ.Env.read_env()
 import dj_database_url
 
 DATABASES = {
