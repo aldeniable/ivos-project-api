@@ -40,7 +40,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware'
 ]
 CORS_ALLOWED_ORIGINS = [
-    'https://ivos-project-frontend.onrender.com',
+    'https://ivos-app-ui.onrender.com',
     "http://localhost:3000"  # Replace with your React app's origin
     # Add other allowed origins as needed
 ]
