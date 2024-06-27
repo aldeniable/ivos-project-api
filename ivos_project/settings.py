@@ -95,12 +95,12 @@ WSGI_APPLICATION = 'ivos_project.wsgi.application'
 '''
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ivos_db',
-        'USER': 'postgres',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ivos_stats',
+        'USER': 'root',
         'PASSWORD': '@Alden123',
         'HOST': 'localhost',
-        'PORT': '5432'
+        'PORT': '3306'
     }
 }
 '''
@@ -109,6 +109,7 @@ DATABASES = {
 #import environ
 #env = environ.Env()
 #environ.Env.read_env()
+
 import dj_database_url
 
 DATABASES = {

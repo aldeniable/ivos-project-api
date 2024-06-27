@@ -23,11 +23,11 @@ class ConsistentFanScoreSerializer(serializers.ModelSerializer):
         fields = ['artist_id','artist_name','consistent_fans_score', 'song_count', 'total_streams', 'onemil', 'fivemil', 'tenmil', 'fiftymil','hundredmil']
 
 class PostSerializer(serializers.ModelSerializer):
-        class Meta(object):
+        class Meta:
             model = Post
             fields = ['idPost','username', 'userID','datePosted','post','like_count']
 class InsertPostSerializer(serializers.ModelSerializer):
-        class Meta(object):
+        class Meta:
             model = Post2
             fields = ['username', 'userID','datePosted','post']
 class UserSerializer(serializers.ModelSerializer):
