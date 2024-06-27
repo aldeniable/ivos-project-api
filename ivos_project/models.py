@@ -230,7 +230,7 @@ class UserProfile(models.Model):
     def getuserprofile(userID):
         query = """
                     SELECT id, username, email, fullname, age, place, fav_artist, fave_album, current_fave_song, gatekeep_song,fan_converter_song,alltime_fave_song,dont_like_song
-                    FROM auth_user
+                    FROM userprofile
                     WHERE id = %s
             """
         userprofile = list(UserProfile.objects.raw(query, [userID]))
